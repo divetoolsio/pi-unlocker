@@ -8,8 +8,7 @@ echo "Writing autoboot script..."
 
 #DEPENDANCIES------------------------------------------------------------------------------------
 sudo apt-get update
-sudo apt-get install -y python git python-pip python-dev screen sqlite3 dhcpd
-pip install pycrypto
+sudo apt-get install -y python git python-pip python-dev screen sqlite3 isc-dhcp-server python-crypto
 cd ~/
 git clone https://github.com/spiderlabs/responder
 
@@ -39,14 +38,12 @@ echo "}" >> /etc/dhcp/dhcpd.conf
 
 #RC LOCAL---------------------------------------------------------------------------------
 echo "#!/bin/bash" > /etc/rc.local
-echo "sleep 30" >> /etc/rc.local
 # Clear leases
 echo "rm -f /var/lib/dhcp/dhcpd.leases" >> /etc/rc.local
 echo "touch /var/lib/dhcp/dhcpd.leases" >> /etc/rc.local  
 # Start DHCP server
 echo "/usr/sbin/dhcpd" >> /etc/rc.local
 # Start Responder
-echo "sleep 30" >> /etc/rc.local
 echo "/usr/bin/screen -dmS responder bash -c 'cd /root/responder/; python Responder.py -I usb0 -f -w -r -d -F'" >> /etc/rc.local
 #start modprobe
 #echo "sudo modprobe g_ether" >> /etc/rc.local
@@ -59,7 +56,7 @@ echo "dtoverlay=dwc2" >> /boot/config.txt
 echo "deflog on" > ~/.screenrc
 echo "logfile /root/logs/screenlog_$USER_.%H.%n.%Y%m%d-%0c:%s.%t.log" >> ~/.screenrc
 
-
+#CMDLINE-----------------------------------------------------------------------------------
 echo "dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait modules-load=dwc2,g_ether" > /boot/cmdline.txt
 
 #END-----------------------------------------------------------------------------------
