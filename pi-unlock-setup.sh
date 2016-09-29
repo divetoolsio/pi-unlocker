@@ -6,13 +6,11 @@ echo "PI-UNLOCK DISK"
 echo "-----------------------------------------------"
 echo "Writing autoboot script..."
 
-
 #DEPENDANCIES------------------------------------------------------------------------------------
-sudo pip install pycrypto  
-sudo su  
-cd ~/  
+sudo apt-get install -y python git python-pip python-dev screen sqlite3 dhcpd
+pip install pycrypto
+cd ~/
 git clone https://github.com/spiderlabs/responder
-
 
 #NETWORK------------------------------------------------------------------------------------
 echo "" >> /etc/network/interfaces
@@ -22,7 +20,6 @@ echo "iface usb0 inet static" >> /etc/network/interfaces
 echo "address 192.168.2.201" >> /etc/network/interfaces
 echo "netmask 255.255.255.0" >> /etc/network/interfaces
 echo "gateway 192.168.2.1" >> /etc/network/interfaces
-
 
 #DHCPD------------------------------------------------------------------------------------
 echo "ddns-update-style none;" > /etc/dhcp/dhcpd.conf
@@ -36,9 +33,8 @@ echo "option local-proxy-config code 252 = text;" >> /etc/dhcp/dhcpd.conf
 echo "subnet 192.168.2.0 netmask 255.255.255.0 {" >> /etc/dhcp/dhcpd.conf
 echo "range 192.168.2.1 192.168.2.2;" >> /etc/dhcp/dhcpd.conf
 echo "option routers 192.168.2.201;" >> /etc/dhcp/dhcpd.conf 
-echo "option local-proxy-config 'http://192.168.2.201/wpad.dat';" >> /etc/dhcp/dhcpd.conf
+echo 'option local-proxy-config "http://192.168.2.201/wpad.dat";' >> /etc/dhcp/dhcpd.conf
 echo "}" >> /etc/dhcp/dhcpd.conf
-
 
 #RC LOCAL---------------------------------------------------------------------------------
 echo "#!/bin/bash" > /etc/rc.local
@@ -53,17 +49,14 @@ echo "/usr/bin/screen -dmS responder bash -c 'cd /root/responder/; python Respon
 echo "sudo modprobe g_ether" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
-
 #MODULE-----------------------------------------------------------------------------------
 echo "Setting up dwc2 module"
 echo "dtoverlay=dwc2" >> /boot/config.txt
 echo "dwc2" > /etc/modules
 
-
 #SCREEN-----------------------------------------------------------------------------------
 echo "deflog on" > ~/.screenrc
 echo "logfile /root/logs/screenlog_$USER_.%H.%n.%Y%m%d-%0c:%s.%t.log" > ~/.screenrc
-
 
 #END-----------------------------------------------------------------------------------
 echo "Pi-Unlock setup is now complete."
