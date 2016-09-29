@@ -10,7 +10,8 @@ echo "Writing autoboot script..."
 sudo apt-get update
 sudo apt-get install -y python git python-pip python-dev screen sqlite3 isc-dhcp-server python-crypto
 cd ~/
-git clone https://github.com/spiderlabs/responder
+#git clone https://github.com/spiderlabs/responder
+git clone https://github.com/lgandx/Responder.git
 
 #NETWORK------------------------------------------------------------------------------------
 echo "" >> /etc/network/interfaces
