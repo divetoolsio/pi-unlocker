@@ -45,23 +45,21 @@ echo "touch /var/lib/dhcp/dhcpd.leases" >> /etc/rc.local
 # Start DHCP server
 echo "/usr/sbin/dhcpd" >> /etc/rc.local
 # Start Responder
+echo "sleep 30" >> /etc/rc.local
 echo "/usr/bin/screen -dmS responder bash -c 'cd /root/responder/; python Responder.py -I usb0 -f -w -r -d -F'" >> /etc/rc.local
 #start modprobe
-echo "sudo modprobe g_ether" >> /etc/rc.local
+#echo "sudo modprobe g_ether" >> /etc/rc.local
 echo "exit 0" >> /etc/rc.local
 
 #MODULE-----------------------------------------------------------------------------------
 echo "dtoverlay=dwc2" >> /boot/config.txt
-echo "dwc2" > /etc/modules
-echo "g_ether" >> /etc/modules
 
 #SCREEN-----------------------------------------------------------------------------------
 echo "deflog on" > ~/.screenrc
 echo "logfile /root/logs/screenlog_$USER_.%H.%n.%Y%m%d-%0c:%s.%t.log" >> ~/.screenrc
 
+
+echo "dwc_otg.lpm_enable=0 console=serial0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait modules-load=dwc2,g_ether" > /boot/cmdline.txt
+
 #END-----------------------------------------------------------------------------------
 echo "Pi-Unlock setup is now complete."
-echo
-echo "Press any key to reboot..."
-read -n 1 -s
-sudo reboot
