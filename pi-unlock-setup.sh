@@ -39,6 +39,7 @@ echo "}" >> /etc/dhcp/dhcpd.conf
 
 #RC LOCAL---------------------------------------------------------------------------------
 echo "#!/bin/bash" > /etc/rc.local
+echo "sleep 30" >> /etc/rc.local
 # Clear leases
 echo "rm -f /var/lib/dhcp/dhcpd.leases" >> /etc/rc.local
 echo "touch /var/lib/dhcp/dhcpd.leases" >> /etc/rc.local  
