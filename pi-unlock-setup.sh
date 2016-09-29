@@ -7,6 +7,7 @@ echo "-----------------------------------------------"
 echo "Writing autoboot script..."
 
 #DEPENDANCIES------------------------------------------------------------------------------------
+sudo apt-get update
 sudo apt-get install -y python git python-pip python-dev screen sqlite3 dhcpd
 pip install pycrypto
 cd ~/
@@ -23,7 +24,7 @@ echo "gateway 192.168.2.1" >> /etc/network/interfaces
 
 #DHCPD------------------------------------------------------------------------------------
 echo "ddns-update-style none;" > /etc/dhcp/dhcpd.conf
-echo "option domain-name 'domain.local';" >> /etc/dhcp/dhcpd.conf
+echo "option domain-name "domain.local";" >> /etc/dhcp/dhcpd.conf
 echo "option domain-name-servers 192.168.2.201;" >> /etc/dhcp/dhcpd.conf
 echo "default-lease-time 60;" >> /etc/dhcp/dhcpd.conf
 echo "max-lease-time 72;" >> /etc/dhcp/dhcpd.conf
